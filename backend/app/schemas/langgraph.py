@@ -5,8 +5,11 @@ class Node():
     name: str
     business_logic: Callable[[AgentState], AgentState]
 
+class SupervisorNode(Node):
+    members: list[str]
+
 class Edge():
     source: str
     target: str
-    condition: Callable[[AgentState], bool]
+    condition: Callable | None = None
 

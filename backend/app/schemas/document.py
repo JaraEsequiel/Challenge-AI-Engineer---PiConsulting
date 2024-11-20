@@ -7,3 +7,7 @@ class DocumentResponse(BaseModel):
 
 class DocumentRetrievalResponse(BaseModel):
     documents: list[Document]
+
+class Qna(BaseModel):
+    question: str
+    answer: str
