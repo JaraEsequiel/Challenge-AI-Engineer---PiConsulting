@@ -101,9 +101,7 @@ class RAGService:
         """
         print(f"Querying vector store with: {query}")
         results = self._vector_store.similarity_search(query, k)
-        print(f"Found {len(results)} matching documents")
-        print(results)
-        return {"documents": results}
+        return results
     
     async def upload_qna(self, qna: Qna) -> dict:
         """Upload a QnA pair to the vector store.

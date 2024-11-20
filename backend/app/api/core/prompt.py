@@ -1,4 +1,6 @@
-def generate_supervisor_prompt(members: list[str]):
+from langchain_core.documents import Document
+
+def generate_supervisor_prompt(members: list[str], user_request: str):
     """
     Generate prompt for supervisor node that manages workflow execution.
     
@@ -9,40 +11,59 @@ def generate_supervisor_prompt(members: list[str]):
         str: Formatted supervisor prompt
     """
     print(f"Generating supervisor prompt for workers: {members}")
-    supervisor_prompt = f"You are a supervisor for a chat flow. You are responsible to manage the execution of the following workers: {members}. Given the following user request, respond with the worker to act next, once you get an answer from the ANSWER worker, you can finish the chat flow. If the user request is not in Spanish, use the TRANSLATE worker. Each worker will perform a task and respond with their results and status. When finished, respond with FINISH."
+    supervisor_prompt = f"""[INTENT]
+    You are a supervisor agent responsible for orchestrating a multi-step chat workflow by coordinating worker nodes.
+
+    [GOAL]
+    Determine the next appropriate worker node to execute based on the user request and workflow state.
+
+    [GUIDELINES]
+    1. Available workers: {members}
+    2. Workflow steps:
+       - If the user request is not in Spanish, ALWAYS use the TRANSLATE worker first
+       - Use RETRIEVAL worker to gather context to answer the user request
+       - Use ANSWER worker to generate the final response
+       
+    [USER REQUESTS]
+    {user_request}
+    """
     
     return supervisor_prompt
 
-def generate_llm_prompt(member: str, context: str, user_request: str):
+def generate_llm_prompt(member: str, context: list[Document], user_request: str):
     """
     Generate prompt for LLM worker node that processes user requests.
     
     Args:
         member (str): Name of the worker node
-        context (str): Retrieved context for answering
+        context (list[Document]): Retrieved context for answering
         user_request (str): Original user question
         
     Returns:
         str: Formatted LLM prompt
     """
     print(f"Generating LLM prompt for worker {member}")
-    llm_prompt = f"""[INTENT]
-    You are a AI assistant tasked to answer the USER REQUEST using only the CONTEXT provided to you. You only can answer the USER REQUEST if it is related to the CONTEXT. If it is not related, refuse gently to answer. Always follow the SPECIFIC INSTRUCTIONS.
+    llm_prompt = f"""
+    [INTENT]
+    You are a AI assistant tasked to answer the USER REQUEST using only the CONTEXT provided to you. You only can answer the USER REQUEST if it is related to the CONTEXT and ALWAYS in the same language as the USER REQUEST. If it is not related, refuse gently to answer. Always follow the SPECIFIC INSTRUCTIONS.
 
     [SPECIFIC INSTRUCTIONS]
     1) Never answer the USER REQUEST if it is not related to the CONTEXT.
 
-    [CONTEXT]
-    {context}
+     [RESPONSE FORMAT]
+    1. Answer in one only paragraph.
+    2. Your answer ALWAYS must be in the same language as the USER REQUEST.
+    3. Your answer ALWAYS must be in third person.
+    4. Your answer ALWAYS must summarize with emojis, do it.
+
+    [CONTEXT TO ANSWER]
+   
+    {"\n".join([f"Content: {doc.page_content}" for doc in context]) if context else "No sources"}
 
     [USER REQUEST]
-    {user_request}
+    {user_request} 
 
-    [RESPONSE FORMAT]
-    1. Answer in one only paragraph.
-    2. Answer in the same language as the USER REQUEST: {user_request}.
-    3. Always answer in third person.
-    4. Always summarize your answer with emojis, do it.
+   
     """
     return llm_prompt
 

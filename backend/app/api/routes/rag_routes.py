@@ -35,7 +35,7 @@ async def query_document(query: str = Query(...), service: RAGService = Depends(
     print(f"Received document query request: {query}")
     return await service.query_document(query)
 
-@router.post("/upload_qna", response_model=DocumentRetrievalResponse)
+@router.post("/upload_qna", response_model=dict)
 async def upload_qna(qna: Qna, service: RAGService = Depends()):
     """
     Endpoint to upload Q&A pairs for RAG.

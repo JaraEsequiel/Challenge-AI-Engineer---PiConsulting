@@ -26,7 +26,7 @@ async def retriever_node(state: RetrievalAgentState) -> RetrievalAgentState:
     
     # Retrieve relevant context using RAG service
     print("Querying RAG service for relevant context...")
-    retrieval_context = await rag_service.query_document(user_query, k=3)
+    retrieval_context = await rag_service.query_document(user_query, k=2)
     print(f"Retrieved context")
 
     return {"retrieval_context": retrieval_context}
