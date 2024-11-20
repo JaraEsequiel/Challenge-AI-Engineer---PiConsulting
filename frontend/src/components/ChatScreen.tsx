@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Send, LogOut } from 'lucide-react';
 import { MessageList } from './MessageList';
 import { useSessionMessages } from '../hooks/useSessionMessages';
+import { Message } from '../types/chat';
+import { API_URL } from '../utils/config';
 
 interface ChatScreenProps {
   username: string;
@@ -18,33 +20,52 @@ export function ChatScreen({ username, onLogout }: ChatScreenProps) {
     onLogout();
   };
 
+  const handleMessageUpdate = (updatedMessage: Message) => {
+    setMessages(messages.map(msg =>
+      msg.id === updatedMessage.id ? updatedMessage : msg
+    ));
+  };
+
   const sendMessage = async (e: React.FormEvent) => {
+    setMessage('');
     e.preventDefault();
+    const input = message;
+    const newMessage: Message = {
+      id: Date.now(),
+      user_name: username,
+      question: input,
+      timestamp: new Date(),
+      userReaction: false,
+    };
+    setMessages([...messages, newMessage]);
+
     if (!message.trim()) return;
 
     setIsLoading(true);
     try {
-      const response = await fetch('YOUR_API_ENDPOINT', {
+      const response = await fetch(`${API_URL}/llm/generate_message`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           user_name: username,
-          question: message,
+          question: input,
         }),
       });
 
       if (!response.ok) throw new Error('Error al enviar el mensaje');
 
-      const newMessage = {
+      const data = await response.json();
+      const newResponseMessage: Message = {
         id: Date.now(),
-        user_name: username,
-        question: message,
+        user_name: 'assistant',
+        question: data.answer,
         timestamp: new Date(),
+        userReaction: false,
       };
 
-      setMessages([...messages, newMessage]);
+      setMessages([...messages, newMessage, newResponseMessage]);
       setMessage('');
     } catch (error) {
       console.error('Error:', error);
@@ -74,7 +95,11 @@ export function ChatScreen({ username, onLogout }: ChatScreenProps) {
         </button>
       </div>
 
-      <MessageList messages={messages} />
+      <MessageList
+        messages={messages}
+        username={username}
+        onMessageUpdate={handleMessageUpdate}
+      />
 
       {/* Message Input */}
       <form onSubmit={sendMessage} className="p-4 bg-white border-t">
@@ -92,8 +117,17 @@ export function ChatScreen({ username, onLogout }: ChatScreenProps) {
             disabled={isLoading}
             className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center space-x-2"
           >
-            <Send className="w-4 h-4" />
-            <span>Enviar</span>
+            {isLoading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span>Cargando...</span>
+              </>
+            ) : (
+              <>
+                <Send className="w-4 h-4" />
+                <span>Enviar</span>
+              </>
+            )}
           </button>
         </div>
       </form>

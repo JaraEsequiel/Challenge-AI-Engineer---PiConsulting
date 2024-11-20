@@ -3,4 +3,10 @@ export interface Message {
   user_name: string;
   question: string;
   timestamp: Date;
+  userReaction: boolean;
+}
+
+export interface ReactionPayload {
+  question: string;
+  answer: string;
 }
