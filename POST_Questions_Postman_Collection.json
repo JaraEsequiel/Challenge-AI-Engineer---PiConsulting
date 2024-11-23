@@ -1,0 +1,443 @@
+{
+  "info": {
+    "name": "Questions Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "English",
+      "item": [
+        {
+          "name": "Q1: What is the key discovery made by Zara in the galaxy of Zenthoria?",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_name\": \"example_user\", \"question\": \"What is the key discovery made by Zara in the galaxy of Zenthoria?\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/llm/generate_message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "llm",
+                "generate_message"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Q2: What ethical dilemmas does Alex face in the dystopian future?",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_name\": \"example_user\", \"question\": \"What ethical dilemmas does Alex face in the dystopian future?\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/llm/generate_message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "llm",
+                "generate_message"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Q3: What makes the 'Moonlight' flower unique in the Amazon jungle?",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_name\": \"example_user\", \"question\": \"What makes the 'Moonlight' flower unique in the Amazon jungle?\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/llm/generate_message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "llm",
+                "generate_message"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Q4: How does Emma use her extra day gifted by the ancient clock?",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_name\": \"example_user\", \"question\": \"How does Emma use her extra day gifted by the ancient clock?\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/llm/generate_message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "llm",
+                "generate_message"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Q5: What skills make 'Silent Shadow' a formidable protector?",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_name\": \"example_user\", \"question\": \"What skills make 'Silent Shadow' a formidable protector?\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/llm/generate_message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "llm",
+                "generate_message"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Portugu\u00eas",
+      "item": [
+        {
+          "name": "Q1: Qual artefato Zara encontra na gal\u00e1xia de Zenthoria?",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_name\": \"example_user\", \"question\": \"Qual artefato Zara encontra na gal\\u00e1xia de Zenthoria?\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/llm/generate_message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "llm",
+                "generate_message"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Q2: Quais desafios Alex enfrenta ao lidar com supercomputadores emotivos?",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_name\": \"example_user\", \"question\": \"Quais desafios Alex enfrenta ao lidar com supercomputadores emotivos?\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/llm/generate_message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "llm",
+                "generate_message"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Q3: O que torna a flor 'Luz de Lua' especial na selva amaz\u00f4nica?",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_name\": \"example_user\", \"question\": \"O que torna a flor 'Luz de Lua' especial na selva amaz\\u00f4nica?\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/llm/generate_message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "llm",
+                "generate_message"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Q4: Como Emma compartilha seu dia extra com os habitantes do vilarejo?",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_name\": \"example_user\", \"question\": \"Como Emma compartilha seu dia extra com os habitantes do vilarejo?\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/llm/generate_message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "llm",
+                "generate_message"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Q5: Quais habilidades destacam o her\u00f3i 'Sombra Silenciosa'?",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_name\": \"example_user\", \"question\": \"Quais habilidades destacam o her\\u00f3i 'Sombra Silenciosa'?\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/llm/generate_message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "llm",
+                "generate_message"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Espa\u00f1ol",
+      "item": [
+        {
+          "name": "Q1: \u00bfQu\u00e9 contiene el artefacto descubierto por Zara en Zenthoria?",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_name\": \"example_user\", \"question\": \"\\u00bfQu\\u00e9 contiene el artefacto descubierto por Zara en Zenthoria?\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/llm/generate_message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "llm",
+                "generate_message"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Q2: \u00bfQu\u00e9 dilemas enfrenta Alex en un futuro con m\u00e1quinas sintientes?",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_name\": \"example_user\", \"question\": \"\\u00bfQu\\u00e9 dilemas enfrenta Alex en un futuro con m\\u00e1quinas sintientes?\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/llm/generate_message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "llm",
+                "generate_message"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Q3: \u00bfPor qu\u00e9 la flor 'Luz de Luna' es un tesoro en la selva amaz\u00f3nica?",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_name\": \"example_user\", \"question\": \"\\u00bfPor qu\\u00e9 la flor 'Luz de Luna' es un tesoro en la selva amaz\\u00f3nica?\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/llm/generate_message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "llm",
+                "generate_message"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Q4: \u00bfQu\u00e9 decide Emma al final de su d\u00eda adicional?",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_name\": \"example_user\", \"question\": \"\\u00bfQu\\u00e9 decide Emma al final de su d\\u00eda adicional?\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/llm/generate_message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "llm",
+                "generate_message"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Q5: \u00bfQu\u00e9 caracter\u00edsticas definen al h\u00e9roe 'Sombra Silenciosa'?",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_name\": \"example_user\", \"question\": \"\\u00bfQu\\u00e9 caracter\\u00edsticas definen al h\\u00e9roe 'Sombra Silenciosa'?\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/llm/generate_message",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "llm",
+                "generate_message"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
