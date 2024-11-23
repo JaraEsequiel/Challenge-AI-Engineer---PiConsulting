@@ -27,7 +27,7 @@ class LangGraphService():
         graph.set_supervisor_node({
             "name": "SUPERVISOR", 
             "business_logic": supervisor_node, 
-            "members": []
+            "members": ["ANSWER"]
         })
         print("Configured supervisor node")
 
@@ -42,8 +42,7 @@ class LangGraphService():
         # Configure edges between nodes
         graph.set_edges([
             {"source": "RETRIEVAL", "target": "ANSWER", "condition": None},
-            {"source": "ANSWER", "target": END, 'condition': None},
-            {"source": "TRANSLATE", "target": "RETRIEVAL", "condition": None}
+            {"source": "TRANSLATE", "target": "RETRIEVAL", "condition": None},
         ])
         print("Configured graph edges and flow")
 

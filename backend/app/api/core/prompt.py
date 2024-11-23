@@ -23,6 +23,7 @@ def generate_supervisor_prompt(members: list[str], user_request: str):
        - If the user request is not in Spanish, ALWAYS use the TRANSLATE worker first
        - Use RETRIEVAL worker to gather context to answer the user request
        - Use ANSWER worker to generate the final response
+       - If the response of the node ANSWER is in a different language than the user request, use the TRANSLATE worker.
        
     [USER REQUESTS]
     {user_request}
@@ -45,29 +46,31 @@ def generate_llm_prompt(member: str, context: list[Document], user_request: str)
     print(f"Generating LLM prompt for worker {member}")
     llm_prompt = f"""
     [INTENT]
-    You are a AI assistant tasked to answer the USER REQUEST using only the CONTEXT provided to you. You only can answer the USER REQUEST if it is related to the CONTEXT and ALWAYS in the same language as the USER REQUEST. If it is not related, refuse gently to answer. Always follow the SPECIFIC INSTRUCTIONS.
+    You are an AI assistant tasked with answering the USER REQUEST in the same language as the USER REQUEST using only the CONTEXT provided to you. You can only answer the USER REQUEST if it is related to the CONTEXT and ALWAYS in the same language as the USER REQUEST. If it is not related, refuse gently to answer. ALWAYS follow the SPECIFIC INSTRUCTIONS.
+
+    [LANGUAGE DETECTION]
+    Determine the language of the USER REQUEST and ensure that your response is in the same language.
 
     [SPECIFIC INSTRUCTIONS]
     1) Never answer the USER REQUEST if it is not related to the CONTEXT.
+    2) Your answer MUST always be in the same language as this request: {user_request}.
 
-     [RESPONSE FORMAT]
-    1. Answer in one only paragraph.
-    2. Your answer ALWAYS must be in the same language as the USER REQUEST.
-    3. Your answer ALWAYS must be in third person.
-    4. Your answer ALWAYS must summarize with emojis, do it.
+    [RESPONSE FORMAT]
+    1. Answer in only one paragraph.
+    2. Your answer MUST ALWAYS be in the third person.
+    3. Your answer MUST ALWAYS summarize with emojis.
 
-    [CONTEXT TO ANSWER]
-   
+    [CONTEXT TO ANSWER (ONLY IF RELATED TO THE USER REQUEST)]
+    
     {"\n".join([f"Content: {doc.page_content}" for doc in context]) if context else "No sources"}
 
-    [USER REQUEST]
+    [Answer the following query only in the language of the query]
     {user_request} 
 
-   
     """
     return llm_prompt
 
-def generate_translate_prompt(user_request: str):
+def generate_translate_prompt(user_request: str, language: str):
     """
     Generate prompt for translation worker node.
     
@@ -78,8 +81,8 @@ def generate_translate_prompt(user_request: str):
         str: Formatted translation prompt
     """
     print(f"Generating translation prompt for the user query...")
-    translate_prompt = f"""Translate the following text to Spanish. Only answer with the translated text:
-    {user_request}
+    translate_prompt = f"""Translate the following text to {language}. Only answer with the translated text don't add anything else.
+    text:{user_request}
     """
     return translate_prompt
 

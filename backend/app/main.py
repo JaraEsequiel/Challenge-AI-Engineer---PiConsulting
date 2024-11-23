@@ -2,6 +2,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import llm_routes, rag_routes
+from dotenv import load_dotenv
+
+load_dotenv()
 
 print("Initializing FastAPI application...")
 app = FastAPI()
