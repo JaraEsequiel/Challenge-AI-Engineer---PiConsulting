@@ -83,7 +83,6 @@ def translate_node(state: RetrievalAgentState) -> RetrievalAgentState:
         RetrievalAgentState: Updated state with translated content
     """
 
-    print(state["messages"])
     if type(state["messages"][-1]) == type(HumanMessage):
         print("Translation node processing state...")
         user_query = state["messages"][-1]
