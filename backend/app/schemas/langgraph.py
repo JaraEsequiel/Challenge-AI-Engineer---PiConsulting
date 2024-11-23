@@ -1,7 +1,8 @@
 from typing import Callable
 from app.api.services.langgraph.state import AgentState
 
-class Node():
+
+class Node:
     """Base class representing a node in the LangGraph workflow.
     
     Attributes:
@@ -10,6 +11,7 @@ class Node():
     """
     name: str
     business_logic: Callable[[AgentState], AgentState]
+
 
 class SupervisorNode(Node):
     """Node class for supervisor that orchestrates workflow execution.
@@ -21,7 +23,8 @@ class SupervisorNode(Node):
     """
     members: list[str]
 
-class Edge():
+
+class Edge:
     """Class representing a directed edge between nodes in the workflow graph.
     
     Attributes:
@@ -30,6 +33,5 @@ class Edge():
         condition (Callable | None): Optional condition function that determines if edge should be traversed
     """
     source: str
-    target: str
+    target: str | None = None
     condition: Callable | None = None
-

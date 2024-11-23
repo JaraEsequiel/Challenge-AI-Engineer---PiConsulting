@@ -1,43 +1,38 @@
 from dotenv import dotenv_values
-from typing import Dict
+from typing import Dict, Any
 
-# Settings class to manage environment variables and configuration
+
 class Settings:
-    _config: Dict  # Dictionary to store configuration values
+    """Settings class to manage environment variables and configuration"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Settings by loading environment variables from .env file"""
-        print("Loading environment variables from .env file...")
-        self._config: Dict = dotenv_values()
-        print(f"Loaded {len(self._config)} configuration values")
+        self._config: Dict[str, Any] = dotenv_values()
     
-    def get(self, key: str, default=None):
-        """
-        Get a configuration value by key
+    def get(self, key: str, default: Any = None) -> Any:
+        """Get a configuration value by key.
         
         Args:
-            key (str): The configuration key to look up
+            key: The configuration key to look up
             default: Value to return if key is not found
             
         Returns:
             The configuration value or default if not found
         """
-        value = self._config.get(key, default)
-        return value
+        return self._config.get(key, default)
     
-    def __getattr__(self, name: str):
-        """
-        Allow accessing config values as attributes
+    def __getattr__(self, name: str) -> Any:
+        """Allow accessing config values as attributes.
+        
         Example: settings.DATABASE_URL instead of settings.get('DATABASE_URL')
         
         Args:
-            name (str): The attribute name to look up
+            name: The attribute name to look up
             
         Returns:
             The configuration value for the given attribute name
         """
         return self.get(name)
 
-# Create a single instance to be imported by other modules
-print("Initializing global Settings instance...")
+
 settings = Settings()

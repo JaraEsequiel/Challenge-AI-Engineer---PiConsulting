@@ -5,13 +5,8 @@ from app.api.services.llm_service import LLMService
 from app.api.services.langgraph.state import RetrievalAgentState
 from app.api.core.prompt import generate_supervisor_prompt, generate_llm_prompt, generate_translate_prompt
 
-# Initialize LLM service with OpenAI model
-print("Initializing LLM service with OpenAI GPT-4o model...")
-llm = LLMService("openai", "gpt-4o")
-llm = llm.get_llm()
-
-# Generate supervisor prompt for workflow orchestration
-print("Generating supervisor prompt for RETRIEVAL, ANSWER and TRANSLATE nodes...")
+# Initialize LLM service
+llm = LLMService("openai", "gpt-4o").get_llm()
 
 class Router(TypedDict):
     """Worker to route to next. If no workers needed, route to FINISH."""
@@ -28,19 +23,10 @@ def supervisor_node(state: RetrievalAgentState) -> RetrievalAgentState:
         RetrievalAgentState: Updated state with next worker to execute
     """
     supervisor_system_prompt = generate_supervisor_prompt(["RETRIEVAL", "ANSWER", "TRANSLATE"], state["messages"])
-    print(f"Supervisor node processing state to determine next worker...")
-    messages = [
-        {"role": "system", "content": supervisor_system_prompt},
-    ]
+    messages = [{"role": "system", "content": supervisor_system_prompt}]
     
-    print("Invoking LLM to get next worker decision...")
     response = llm.with_structured_output(Router).invoke(messages)
-    next_ = response["next"]
-    if next_ == "FINISH":
-        next_ = END
-
-    return {"next": next_}
-    print(f"Supervisor decided next worker should be: {next_}")
+    next_ = END if response["next"] == "FINISH" else response["next"]
 
     return {"next": next_}
 
@@ -55,21 +41,12 @@ def llm_node(state: RetrievalAgentState) -> RetrievalAgentState:
         RetrievalAgentState: Updated state with generated response
     """
     user_query = state["messages"][0].content
-    print(f"Extracted user query: {user_query}")
     
-    print("Generating LLM prompt with context...")
-    if "retrieval_context" in state and state["retrieval_context"]:
-        llm_system_prompt = generate_llm_prompt("ANSWER", state["retrieval_context"], user_query)
-    else:
-        llm_system_prompt = generate_llm_prompt("ANSWER", [], user_query)
-
-    messages = [
-        {"role": "system", "content": llm_system_prompt},
-    ]
-    print("Invoking LLM to generate response...")
+    context = state.get("retrieval_context", [])
+    llm_system_prompt = generate_llm_prompt("ANSWER", context, user_query)
+    messages = [{"role": "system", "content": llm_system_prompt}]
+    
     response = llm.invoke(messages)
-    print("Generated LLM response:", response.content)
-
     return {"messages": [{"role": "assistant", "content": response.content, "node": "ANSWER"}]}
 
 def translate_node(state: RetrievalAgentState) -> RetrievalAgentState:
@@ -82,20 +59,23 @@ def translate_node(state: RetrievalAgentState) -> RetrievalAgentState:
     Returns:
         RetrievalAgentState: Updated state with translated content
     """
-
-    if type(state["messages"][-1]) == type(HumanMessage):
-        print("Translation node processing state...")
-        user_query = state["messages"][-1]
-        print(f"Extracting query to translate: {user_query}")
-        
-        print("Generating translation prompt...")
+    if isinstance(state["messages"][-1], HumanMessage):
+        user_query = state["messages"][-1].content
         translate_prompt = generate_translate_prompt(user_query, "Spanish")
+        response = llm.invoke([{"role": "system", "content": translate_prompt}])
+        
+        return {
+            "messages": [{"role": "assistant", "content": response.content, "node": "TRANSLATE"}],
+            "translated_context": response.content,
+            "next": "RETRIEVAL"
+        }
     else:
-        language = f" Translate the answer to the language of the following query: {state['messages'][0].content}"
+        language = f"Translate the answer to the language of the following query: {state['messages'][0].content}"
         translate_prompt = generate_translate_prompt(state["messages"][-1].content, language)
-    
-    print("Invoking LLM for translation...")
-    response = llm.invoke([{"role": "system", "content": translate_prompt}])
-
-    return {"messages": [{"role": "assistant", "content": response.content, "node": "TRANSLATE"}], "translated_context": response.content}
-
+        response = llm.invoke([{"role": "system", "content": translate_prompt}])
+        
+        return {
+            "messages": [{"role": "assistant", "content": response.content, "node": "TRANSLATE"}],
+            "translated_context": response.content,
+            "next": END
+        }

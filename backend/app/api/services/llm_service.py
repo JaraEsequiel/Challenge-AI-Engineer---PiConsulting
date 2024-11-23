@@ -1,6 +1,7 @@
 from langchain_openai import ChatOpenAI
 from app.api.core.config import settings
 
+
 class LLMService:
     """Service class for managing LLM interactions and message generation.
     
@@ -9,7 +10,7 @@ class LLMService:
     """
     __llm: ChatOpenAI
 
-    def __init__(self, provider: str, model: str):
+    def __init__(self, provider: str, model: str) -> None:
         """Initialize LLM service with specified provider and model.
         
         Args:
@@ -19,17 +20,14 @@ class LLMService:
         Raises:
             ValueError: If unsupported provider is specified
         """
-        print(f"Initializing LLM service with provider: {provider}, model: {model}")
-        if provider.lower() == "openai":
-            print("Configuring OpenAI ChatGPT model...")
-            self.__llm = ChatOpenAI(api_key=settings.get("OPENAI_API_KEY"),
-                model=model,
-                temperature=0
-            )
-            print("Successfully initialized OpenAI model")
-        else:
-            print(f"Error: Unsupported provider {provider}")
+        if provider.lower() != "openai":
             raise ValueError(f"Provider {provider} not supported. Currently only OpenAI is supported.")
+            
+        self.__llm = ChatOpenAI(
+            api_key=settings.get("OPENAI_API_KEY"),
+            model=model,
+            temperature=0
+        )
 
     async def generate_message(self, content: str) -> str:
         """Generate a response using the configured LLM.
@@ -40,16 +38,12 @@ class LLMService:
         Returns:
             str: Generated response from LLM
         """
-        print(f"Generating message for content: {content}")
-        response = self.__llm.invoke(content)
-        print(f"Generated response: {response}")
-        return response
+        return self.__llm.invoke(content)
     
-    def get_llm(self):
+    def get_llm(self) -> ChatOpenAI:
         """Get the configured LLM instance.
         
         Returns:
             ChatOpenAI: The configured LLM instance
         """
-        print("Retrieving configured LLM instance")
         return self.__llm
