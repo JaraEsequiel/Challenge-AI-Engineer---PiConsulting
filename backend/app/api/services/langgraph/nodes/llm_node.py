@@ -41,9 +41,9 @@ def llm_node(state: RetrievalAgentState) -> RetrievalAgentState:
         RetrievalAgentState: Updated state with generated response
     """
     user_query = state["messages"][0].content
-    
+    answer_language = state["original_language"]
     context = state.get("retrieval_context", [])
-    llm_system_prompt = generate_llm_prompt("ANSWER", context, user_query)
+    llm_system_prompt = generate_llm_prompt("ANSWER", context, user_query, answer_language)
     messages = [{"role": "system", "content": llm_system_prompt}]
     
     response = llm.invoke(messages)
@@ -62,20 +62,19 @@ def translate_node(state: RetrievalAgentState) -> RetrievalAgentState:
     if isinstance(state["messages"][-1], HumanMessage):
         user_query = state["messages"][-1].content
         translate_prompt = generate_translate_prompt(user_query, "Spanish")
-        response = llm.invoke([{"role": "system", "content": translate_prompt}])
+        response = llm.invoke([{"role": "system", "content": translate_prompt}]).content
+
+        # Start Generation Here
+        array_response = response.split('\n')
+         
         
         return {
-            "messages": [{"role": "assistant", "content": response.content, "node": "TRANSLATE"}],
-            "translated_context": response.content,
+            "messages": [{"role": "assistant", "content": response, "node": "TRANSLATE"}],
+            "translated_context": array_response[0],
+            "original_language": array_response[-1],
             "next": "RETRIEVAL"
         }
     else:
-        language = f"Translate the answer to the language of the following query: {state['messages'][0].content}"
-        translate_prompt = generate_translate_prompt(state["messages"][-1].content, language)
-        response = llm.invoke([{"role": "system", "content": translate_prompt}])
-        
-        return {
-            "messages": [{"role": "assistant", "content": response.content, "node": "TRANSLATE"}],
-            "translated_context": response.content,
-            "next": END
-        }
+        return {"next": "RETRIEVAL"}
+
+

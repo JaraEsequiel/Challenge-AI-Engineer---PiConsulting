@@ -25,7 +25,7 @@ class LangGraphService:
         graph.set_supervisor_node({
             "name": "SUPERVISOR",
             "business_logic": supervisor_node,
-            "members": ["ANSWER"]
+            "members": []
         })
 
         # Configure worker nodes 
@@ -38,7 +38,8 @@ class LangGraphService:
         # Configure edges between nodes
         graph.set_edges([
             {"source": "RETRIEVAL", "target": "ANSWER", "condition": None},
-            {"source": "TRANSLATE", "target": None, "condition": lambda state: state["next"]}
+            {"source": "TRANSLATE", "target": "RETRIEVAL", "condition": None},
+            {"source": "ANSWER", "target": END, "condition": None}
         ])
 
         # Build and execute graph

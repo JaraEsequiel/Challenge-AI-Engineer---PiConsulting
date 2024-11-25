@@ -53,6 +53,6 @@ class GraphFactory:
                 graph.add_edge(edge["source"], edge["target"])
 
         graph = graph.compile()
-        graph.get_graph().draw_mermaid_png()
+        graph.get_graph().draw_mermaid_png(output_file_path="graph.png")
 
         return graph

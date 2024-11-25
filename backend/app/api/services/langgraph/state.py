@@ -19,3 +19,4 @@ class RetrievalAgentState(SupervisorState):
     """State class for retrieval-augmented generation workflow."""
     retrieval_context: list[Document]
     translated_context: str
+    original_language: str
