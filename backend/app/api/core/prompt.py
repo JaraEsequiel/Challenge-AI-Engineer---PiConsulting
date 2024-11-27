@@ -12,6 +12,7 @@ def generate_supervisor_prompt(members: list[str], user_request: str) -> str:
         str: Formatted supervisor prompt
     """
     print(f"Generating supervisor prompt for workers: {members}")
+    workflow_history = "\n".join([f"{user_request[i].additional_kwargs.get('node', '')}: {user_request[i].content};" for i in range(1, len(user_request))])
     
     supervisor_prompt = f"""#INTENT
 You are a supervisor agent responsible for orchestrating a multi-step chat workflow by coordinating worker nodes.
@@ -30,7 +31,7 @@ Determine the next appropriate worker node to execute based on the user request 
 - USER REQUESTS: {user_request[0].content}
 
 # WORKFLOW HISTORY
-{"\n1. ".join([f"{user_request[i].additional_kwargs.get('node', '')}: {user_request[i].content};" for i in range(1, len(user_request))])}
+{workflow_history}
 """
     return supervisor_prompt
 

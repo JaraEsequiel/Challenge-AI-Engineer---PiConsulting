@@ -41,7 +41,10 @@ def llm_node(state: RetrievalAgentState) -> RetrievalAgentState:
         RetrievalAgentState: Updated state with generated response
     """
     user_query = state["messages"][0].content
-    answer_language = state["original_language"]
+    if "original_language" in state:
+        answer_language = state["original_language"]
+    else:
+        answer_language = "Spanish" 
     context = state.get("retrieval_context", [])
     llm_system_prompt = generate_llm_prompt("ANSWER", context, user_query, answer_language)
     messages = [{"role": "system", "content": llm_system_prompt}]
